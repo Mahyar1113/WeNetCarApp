@@ -1,0 +1,146 @@
+﻿<div>
+    <h1>Car Count Chart</h1>
+    <canvas id="carCountChart" style="max-width: 500px; max-height: 300px;"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var carCountData = @Html.Raw(Json.Encode(ViewBag.CarCountByLocation));
+
+    var labels = Object.keys(carCountData);
+    var data = Object.values(carCountData);
+
+    var carCountCtx = document.getElementById('carCountChart').getContext('2d');
+    new Chart(carCountCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Number of Cars',
+                data: data,
+                backgroundColor: 'rgba(0, 128, 0, 0.6)' // Change the color here
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        }
+    });
+</script>
+
+<div>
+    <h1>Average Price Chart</h1>
+    <canvas id="averagePriceChart" style="max-width: 500px; max-height: 300px;"></canvas>
+</div>
+
+<script>
+    var averagePriceData = @Html.Raw(Json.Encode(ViewBag.AveragePriceByLocation));
+
+    var locations = Object.keys(averagePriceData);
+    var averagePrices = Object.values(averagePriceData);
+
+    var averagePriceCtx = document.getElementById('averagePriceChart').getContext('2d');
+    new Chart(averagePriceCtx, {
+        type: 'pie',
+        data: {
+            labels: locations,
+            datasets: [{
+                data: averagePrices,
+                backgroundColor: [
+                    'rgba(270, 99, 132, 0.6)',   // Color for the first location
+                    'rgba(54, 162, 235, 0.6)',   // Color for the second location
+                    'rgba(255, 206, 86, 0.6)',    // Color for the third location
+                    // Add more colors for additional locations as needed
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+
+<style>
+    /* Styles for the table */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    td:nth-child(even) {
+        background-color: #e6f7ff;
+    }
+
+    td:nth-child(odd) {
+        background-color: #d6ecff;
+    }
+</style>
+
+<div>
+    <h1> Average Price of the cars in cities</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Average Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterate over the averagePriceByLocation dictionary and generate a row for each location -->
+            @foreach (var location in ViewBag.AveragePriceByLocation.Keys)
+            {
+                <tr>
+                    <td>@location</td>
+                    <td>@ViewBag.AveragePriceByLocation[location]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h1>Top 5 Most Expensive Cars</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Car</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in ViewBag.TopExpensiveCars)
+            {
+                <tr>
+                    <td>@car.Name</td>
+                    <td>@car.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+```

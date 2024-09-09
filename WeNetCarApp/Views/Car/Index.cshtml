@@ -1,0 +1,170 @@
+﻿@model List<Car>
+
+@{
+    ViewBag.Title = "Car List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    string username = "admin";
+    string password = "1234";
+
+    if (Request.HttpMethod == "POST")
+    {
+        var enteredUsername = Request.Form["username"];
+        var enteredPassword = Request.Form["password"];
+
+        if (enteredUsername == username && enteredPassword == password)
+        {
+            // Perform the desired action after successful login
+            <div class="text-center mt-4">
+                <div class="alert alert-success" role="alert">
+                    Login successful!
+                </div>
+            </div>
+        }
+        else
+        {
+            // Show an error message for invalid login credentials
+            <div class="text-center mt-4">
+                <div class="alert alert-danger" role="alert">
+                    Invalid username or password
+                </div>
+            </div>
+
+            // Redirect the user to an error page using JavaScript
+            <script>
+                setTimeout(function () {
+                    window.location.href = "/error-page"; // Replace "/error-page" with the actual URL of your error page
+                }, 3000); // Redirect after 3 seconds (adjust the delay as needed)
+            </script>
+        }
+    }
+}
+
+<style>
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+        font-size: 16px;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img.card-img-top {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            object-fit: cover;
+            height: 250px;
+        }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .btn-group {
+        margin-top: 15px;
+    }
+
+    .pagination {
+        justify-content: center;
+    }
+
+        .pagination .page-item {
+            margin: 0 2px;
+        }
+
+        .pagination .page-link {
+            border-radius: 50%;
+            min-width: 40px;
+            height: 40px;
+            padding: 8px;
+        }
+
+    .btn-add-car {
+        margin-top: 20px;
+    }
+
+
+</style>
+
+
+<div class="container">
+    <h1>Cars List</h1>
+
+    <div class="row">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="~/Content/Images/@car.ImageUrl" class="card-img-top" alt="@car.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@car.Name</h5>
+                        <p class="card-text">
+                            <span class="label">Production Date:</span>
+                            <span class="value">@car.ProductionDate</span>
+                        </p>
+                        <p class="card-text">
+                            <span class="label">Location:</span>
+                            <span class="value">@car.Location</span>
+                        </p>
+                        <p class="card-text">
+                            <span class="label">Price:</span>
+                            <span class="value">@car.Price</span>
+                        </p>
+
+                        <div class="text-center">
+                            <div class="btn-group" role="group">
+                                <a href="@Url.Action("Edit", new { id = car.Id })" class="btn btn-primary">Edit</a>
+                                <form method="post" action="@Url.Action("Delete", new { id = car.Id })" onsubmit="return confirm('Are you sure you want to delete this car?');">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <nav aria-label="Car Pagination">
+            <ul class="pagination justify-content-center">
+                @for (var i = 1; i <= Model.Count; i++)
+                {
+                    <li class="page-item @(i == 1 ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a></li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("Create")" class="btn btn-primary">Add your Car here</a>
+    </div>
+</div>
+
+<style>
+    .card-text .label {
+        color: darkblue;
+        font-weight: bold;
+    }
+
+    .card-text .value {
+        color: darkblue;
+    }
+</style>

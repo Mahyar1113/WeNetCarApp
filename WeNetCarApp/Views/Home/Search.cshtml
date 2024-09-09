@@ -1,0 +1,35 @@
+﻿@model List<Car>
+
+<h2>Search Results</h2>
+
+@if (Model.Any())
+{
+    <ul>
+        @foreach (var car in Model)
+        {
+            <li>
+                @if (!string.IsNullOrEmpty(car.ImageUrl))
+                {
+                    <img src="@car.ImageUrl" alt="@car.Name" />
+                }
+                <p>Name: @car.Name</p>
+                <p>Location: @car.Location</p>
+                <p>Price: @car.Price</p>
+                <p>ProductionDate: @car.ProductionDate</p>
+
+                @if (car.Price >= ViewBag.MinPrice && car.Price <= ViewBag.MaxPrice)
+                {
+                    <p>Price is within the specified range.</p>
+                }
+                else
+                {
+                    <p>Price is outside the specified range.</p>
+                }
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No results found.</p>
+}

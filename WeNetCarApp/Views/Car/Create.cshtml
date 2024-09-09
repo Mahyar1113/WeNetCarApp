@@ -1,0 +1,33 @@
+﻿@model Car
+
+@using (Html.BeginForm("Store", "Car", FormMethod.Post))
+{
+   // @Html.LabelFor(m => m.ImageUrl)
+   // @Html.TextBoxFor(m => m.ImageUrl)
+   // @Html.ValidationMessageFor(m => m.ImageUrl)
+
+    @Html.LabelFor(m => m.Name)
+    @Html.TextBoxFor(m => m.Name)
+    @Html.ValidationMessageFor(m => m.Name)
+
+    <!--you can Add other car properties input fields -->
+   
+
+    @Html.LabelFor(m => m.Location)
+    @Html.TextBoxFor(m => m.Location)
+    @Html.ValidationMessageFor(m => m.Location)
+
+
+    @Html.LabelFor(m => m.Price)
+    @Html.TextBoxFor(m => m.Price)
+    @Html.ValidationMessageFor(m => m.Price)
+
+    @Html.LabelFor(m => m.Description)
+    @Html.TextBoxFor(m => m.Description)
+    @Html.ValidationMessageFor(m => m.Description)
+
+
+
+    <input type="submit" value="Add Car" />
+}
+
